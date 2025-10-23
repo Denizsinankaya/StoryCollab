@@ -1,4 +1,13 @@
+using Microsoft.EntityFrameworkCore;
+using StoryCollab.Infrastructure.Data;
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+
+builder.Services.AddDbContext<StoryDbContext>(options =>
+   options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
 
 // Add services to the container.
 
@@ -20,6 +29,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.MapControllers();
 
+
+app.MapControllers();
 app.Run();
