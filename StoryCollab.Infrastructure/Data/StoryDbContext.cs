@@ -17,6 +17,27 @@ public class StoryDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        modelBuilder.Entity<Chapter>(b =>
+        {
+            b.ToTable("Chapters");
+            b.HasKey(x => x.Id);
+
+            b.Property(x => x.Title).HasMaxLength(256).IsRequired();
+            b.Property(x => x.Content).IsRequired();
+            b.Property(x => x.VersionNumber).HasDefaultValue(1);
+            b.Property(x => x.IsPublished).HasDefaultValue(false);
+
+            b.HasOne(c => c.Story)
+             .WithMany()
+             .HasForeignKey(c => c.StoryId)
+             .OnDelete(DeleteBehavior.Cascade);
+
+            b.HasOne(c => c.Author)
+             .WithMany()
+             .HasForeignKey(c => c.AuthorId)
+             .OnDelete(DeleteBehavior.Restrict);
+        });
+
         modelBuilder.Entity<Story>(b =>
         {
             b.ToTable("Stories");
