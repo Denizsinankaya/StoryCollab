@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StoryCollab.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using StoryCollab.Infrastructure.Data;
 namespace StoryCollab.Infrastructure.Migrations
 {
     [DbContext(typeof(StoryDbContext))]
-    partial class StoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251024112248_AddStoryEntities")]
+    partial class AddStoryEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

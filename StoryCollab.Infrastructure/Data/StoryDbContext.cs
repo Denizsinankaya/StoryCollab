@@ -17,6 +17,21 @@ public class StoryDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        modelBuilder.Entity<Story>(b =>
+        {
+            b.ToTable("Stories");
+            b.HasKey(x => x.Id);
+            b.Property(x => x.Title).HasMaxLength(256).IsRequired();
+            b.Property(x => x.Description).HasMaxLength(1000);
+            b.Property(x => x.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+
+            // Story.Owner ilişkisi
+            b.HasOne(s => s.Owner)
+             .WithMany()
+             .HasForeignKey(s => s.OwnerId)
+             .OnDelete(DeleteBehavior.Restrict);
+        });
+
         modelBuilder.Entity<User>(b =>
         {
             b.ToTable("Users");
@@ -33,19 +48,23 @@ public class StoryDbContext : DbContext
         });
 
 
-        //Story - Contributor İlişkisi (many-to-many)
-        modelBuilder.Entity<StoryContributor>()
-            .HasKey(sc => new { sc.UserId, sc.StoryId });
+        modelBuilder.Entity<StoryContributor>(b =>
+        {
+            b.ToTable("StoryContributors");
+            b.HasKey(sc => new { sc.UserId, sc.StoryId });
 
-        modelBuilder.Entity<StoryContributor>()
-            .HasOne(sc => sc.User)
-            .WithMany(u => u.Contributions)
-            .HasForeignKey(sc => sc.UserId);
+            b.Property(sc => sc.Role).HasMaxLength(64).HasDefaultValue("Contributor");
 
-        modelBuilder.Entity<StoryContributor>()
-            .HasOne(sc => sc.Story)
-            .WithMany(s => s.Contributors)
-            .HasForeignKey(sc => sc.StoryId);
+            b.HasOne(sc => sc.User)
+             .WithMany(u => u.Contributions)
+             .HasForeignKey(sc => sc.UserId)
+             .OnDelete(DeleteBehavior.Cascade);
+
+            b.HasOne(sc => sc.Story)
+             .WithMany(s => s.Contributors)
+             .HasForeignKey(sc => sc.StoryId)
+             .OnDelete(DeleteBehavior.Cascade);
+        });
+
     }
-
 }
