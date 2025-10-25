@@ -1,0 +1,49 @@
+﻿@model List<StoryCollab.AdminMvc.Models.StoryListItem>
+@{
+    ViewData["Title"] = "My Stories";
+}
+<div class="container mt-4">
+    <h3 class="mb-3">My Stories</h3>
+    <partial name="~/Views/Shared/_Alerts.cshtml" />
+    <a class="btn btn-primary btn-sm mb-3" asp-controller="Stories" asp-action="Create">New Story</a>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">You don't have any stories yet.</div>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Title</th>
+                    <th>Created</th>
+                    <th style="width:280px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var s in Model)
+                {
+                    <tr>
+                        <td>@s.Id</td>
+                        <td>@s.Title</td>
+                        <td>@s.CreatedAt.ToLocalTime().ToString("g")</td>
+                        <td>
+                            <a class="btn btn-outline-secondary btn-sm"
+                               href="/Stories/AddContributor/@s.Id">
+                                Add Contributor
+                            </a>
+
+                            <a class="btn btn-outline-primary btn-sm"
+                               href="/Stories/AddChapter/@s.Id">
+                                Add Chapter
+                            </a>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

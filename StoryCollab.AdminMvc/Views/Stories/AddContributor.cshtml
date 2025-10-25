@@ -1,0 +1,21 @@
+﻿@model StoryCollab.AdminMvc.Models.AddContributorVm
+@{
+    ViewData["Title"] = "Add Contributor";
+}
+<div class="container mt-4" style="max-width:600px;">
+    <h3>Add Contributor</h3>
+    <partial name="~/Views/Shared/_Alerts.cshtml" />
+    <form asp-action="AddContributor" asp-controller="Stories" method="post">
+        <input type="hidden" asp-for="StoryId" />
+        <div class="mb-2">
+            <label class="form-label">Contributor Email</label>
+            <input asp-for="Email" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Role (optional)</label>
+            <input asp-for="Role" class="form-control" placeholder="Editor / Contributor" />
+        </div>
+        <button class="btn btn-primary">Add</button>
+        <a asp-action="Index" class="btn btn-link">Back</a>
+    </form>
+</div>
