@@ -34,4 +34,4 @@
 Öncelikle, repository'yi bilgisayarınıza klonlayın:
 
 ```bash
-git clone https://github.com/yourusername/storycollab.git
+git clone https://github.com/Denizsinankaya/storycollab.git
